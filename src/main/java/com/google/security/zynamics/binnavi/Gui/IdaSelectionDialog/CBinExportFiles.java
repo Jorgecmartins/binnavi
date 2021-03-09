@@ -25,7 +25,7 @@ public final class CBinExportFiles {
    * Files to put into the plugins directory of IDA Pro on Windows.
    */
   private static final String[] PLUGIN_FILES_WINDOWS =
-      new String[] {"zynamics_binexport_9.plw", "zynamics_binexport_9.p64"};
+      new String[] {"zynamics_binexport_8.plw", "zynamics_binexport_8.p64"};
 
   /**
    * Files to put into the plugins directory of IDA Pro on Linux.

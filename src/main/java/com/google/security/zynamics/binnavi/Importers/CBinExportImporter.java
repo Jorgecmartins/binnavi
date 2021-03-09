@@ -35,7 +35,7 @@ public final class CBinExportImporter extends CBaseExporter {
   /**
    * Path to the BinExport IDC file.
    */
-  private static final String BINEXPORT_VERSION = "zynamics_binexport_9";
+  private static final String BINEXPORT_VERSION = "zynamics_binexport_8";
   private static final String BINEXPORT_IDC_FILE_CONTENT = "#include <idc.idc>\n" + //
       "static main() {\n" + //
       "  Batch(0);\n" + //
@@ -205,7 +205,7 @@ public final class CBinExportImporter extends CBaseExporter {
 
         try {
           exitCode = processInfo.waitFor();
-
+	  System.out.println("Exit code of ida:" + exitCode);
           handleExitCode(exitCode);
         } catch (final InterruptedException e) {
           CUtilityFunctions.logException(e);
