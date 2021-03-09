@@ -44,8 +44,11 @@ public class NopTranslator implements IInstructionTranslator {
   public void translate(final ITranslationEnvironment environment, final IInstruction instruction,
       final List<ReilInstruction> instructions) throws InternalTranslationException {
     TranslationHelpers.checkTranslationArguments(environment, instruction, instructions, "nop");
+    
+    // nop
+    // nop ds:[rax + rax + 0h]
 
-    if (instruction.getOperands().size() != 0) {
+    if (instruction.getOperands().size() > 1) {
       throw new InternalTranslationException(
           "Error: Argument instruction is not a nop instruction (invalid number of operands)");
     }
