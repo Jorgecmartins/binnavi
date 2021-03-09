@@ -1,18 +1,17 @@
-/*
-Copyright 2011-2016 Google Inc. All Rights Reserved.
+// Copyright 2011-2016 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package com.google.security.zynamics.reil.translators.x86;
 
 import java.util.List;
@@ -63,14 +62,12 @@ public class ScasGenerator implements IStringInstructionGenerator {
     final String result = environment.getNextVariableString();
 
     // Load the value from EDI
-    instructions.add(ReilHelpers.createLdm(offset, archSize, "edi", operandSize, result));
-    offset++;
+    instructions.add(ReilHelpers.createLdm(offset++, archSize, "edi", operandSize, result));
 
     if (operandSize != archSize) {
       maskedEax = environment.getNextVariableString();
-      instructions.add(ReilHelpers.createAnd(offset, archSize, "eax", archSize, mask, archSize,
-          maskedEax));
-      offset++;
+      instructions.add(
+          ReilHelpers.createAnd(offset++, archSize, "eax", archSize, mask, archSize, maskedEax));
     } else {
       maskedEax = "eax";
     }
@@ -79,28 +76,28 @@ public class ScasGenerator implements IStringInstructionGenerator {
     final String subResult = environment.getNextVariableString();
 
     // Update EDI depending on the value of the DF
-    final String jmpGoal =
-        String.format("%d.%d", ReilHelpers.toNativeAddress(new CAddress(baseOffset)).toLong(),
-            previousInstructions + 5 + (operandSize != archSize ? 1 : 0));
-    instructions.add(ReilHelpers.createJcc(offset + 1, OperandSize.BYTE, Helpers.DIRECTION_FLAG,
+    final String jmpGoal = String.format("%d.%d",
+        ReilHelpers.toNativeAddress(new CAddress(baseOffset)).toLong(),
+        previousInstructions + 5 + (operandSize != archSize ? 1 : 0));
+    instructions.add(ReilHelpers.createJcc(offset++, OperandSize.BYTE, Helpers.DIRECTION_FLAG,
         OperandSize.ADDRESS, jmpGoal));
-    instructions.add(ReilHelpers.createAdd(offset + 2, archSize, "edi", archSize, ediChange,
+    instructions.add(ReilHelpers.createAdd(offset++, archSize, "edi", archSize, ediChange,
         resultSize, addResult));
-    instructions.add(ReilHelpers.createAnd(offset + 3, resultSize, addResult, resultSize,
+    instructions.add(ReilHelpers.createAnd(offset++, resultSize, addResult, resultSize,
         truncateMask, resultSize, "edi"));
 
-    final String jmpGoal2 =
-        String.format("%d.%d", ReilHelpers.toNativeAddress(new CAddress(baseOffset)).toLong(),
-            previousInstructions + 7 + (operandSize != archSize ? 1 : 0));
-    instructions.add(ReilHelpers.createJcc(offset + 4, OperandSize.BYTE, "1", OperandSize.ADDRESS,
-        jmpGoal2));
-    instructions.add(ReilHelpers.createSub(offset + 5, archSize, "edi", archSize, ediChange,
+    final String jmpGoal2 = String.format("%d.%d",
+        ReilHelpers.toNativeAddress(new CAddress(baseOffset)).toLong(),
+        previousInstructions + 7 + (operandSize != archSize ? 1 : 0));
+    instructions
+        .add(ReilHelpers.createJcc(offset++, OperandSize.BYTE, "1", OperandSize.ADDRESS, jmpGoal2));
+    instructions.add(ReilHelpers.createSub(offset++, archSize, "edi", archSize, ediChange,
         resultSize, subResult));
-    instructions.add(ReilHelpers.createAnd(offset + 6, resultSize, subResult, resultSize,
+    instructions.add(ReilHelpers.createAnd(offset++, resultSize, subResult, resultSize,
         truncateMask, resultSize, "edi"));
 
-    instructions.add(ReilHelpers.createNop(offset + 7));
+    instructions.add(ReilHelpers.createNop(offset++));
 
-    Helpers.generateSub(environment, offset + 8, operandSize, maskedEax, result, instructions);
+    Helpers.generateSub(environment, offset++, operandSize, maskedEax, result, instructions);
   }
 }

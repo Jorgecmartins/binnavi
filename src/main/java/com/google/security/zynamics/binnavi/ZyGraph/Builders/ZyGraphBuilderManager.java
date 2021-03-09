@@ -1,18 +1,17 @@
-/*
-Copyright 2011-2016 Google Inc. All Rights Reserved.
+// Copyright 2011-2016 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package com.google.security.zynamics.binnavi.ZyGraph.Builders;
 
 import java.util.HashMap;
@@ -39,13 +38,13 @@ public final class ZyGraphBuilderManager {
    * Currently active builders.
    */
   private final Map<INaviView, ZyGraphBuilder> m_builders =
-      new HashMap<INaviView, ZyGraphBuilder>();
+      new HashMap<>();
 
   /**
    * Listeners that are notified about changes in the managed builders.
    */
   private final ListenerProvider<IGraphBuilderManagerListener> m_listeners =
-      new ListenerProvider<IGraphBuilderManagerListener>();
+      new ListenerProvider<>();
 
   /**
    * Private constructor => Singleton.

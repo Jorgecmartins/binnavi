@@ -1,18 +1,17 @@
-/*
-Copyright 2011-2016 Google Inc. All Rights Reserved.
+// Copyright 2011-2016 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package com.google.security.zynamics.binnavi.disassembly.types;
 
 import com.google.common.base.Preconditions;
@@ -66,7 +65,7 @@ public final class TypeInstanceContainer {
    * Stores a mapping of the internal {@link TypeInstanceAddress} to its {@link TypeInstance}.
    */
   private final TreeMap<TypeInstanceAddress, TypeInstance> instancesByAddress =
-      new TreeMap<TypeInstanceAddress, TypeInstance>();
+      new TreeMap<>();
 
   /**
    * The {@link TypeInstanceContainerBackend} used to store and retrieve {@link TypeInstance}
@@ -78,7 +77,7 @@ public final class TypeInstanceContainer {
    * The listener which is informed of changes in the {@link TypeInstanceContainer}.
    */
   private final ListenerProvider<TypeInstanceContainerListener> listeners =
-      new ListenerProvider<TypeInstanceContainerListener>();
+      new ListenerProvider<>();
 
   /**
    * Creates a new {@link TypeInstanceContainer}. Only the {@link TypeInstance} are loaded in this

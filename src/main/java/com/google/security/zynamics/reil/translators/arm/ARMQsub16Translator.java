@@ -1,18 +1,17 @@
-/*
-Copyright 2011-2016 Google Inc. All Rights Reserved.
+// Copyright 2011-2016 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package com.google.security.zynamics.reil.translators.arm;
 
 import com.google.security.zynamics.reil.ReilHelpers;
@@ -57,21 +56,21 @@ public class ARMQsub16Translator extends ARMBaseTranslator {
         final String sum1Sat = environment.getNextVariableString();
         final String sum2Sat = environment.getNextVariableString();
 
-        long baseOffset = offset;
+        long baseOffset = offset - instructions.size();
 
         // do the subs
-        instructions.add(ReilHelpers.createSub(baseOffset++, dw, firstTwo[0], dw, secondTwo[0], dw,
-            sum1));
-        instructions.add(ReilHelpers.createSub(baseOffset++, dw, firstTwo[1], dw, secondTwo[1], dw,
-            sum2));
+        instructions.add(ReilHelpers.createSub(baseOffset + instructions.size(), dw, firstTwo[0],
+            dw, secondTwo[0], dw, sum1));
+        instructions.add(ReilHelpers.createSub(baseOffset + instructions.size(), dw, firstTwo[1],
+            dw, secondTwo[1], dw, sum2));
 
         // Do the Sat
-        Helpers.signedSat(baseOffset, environment, instruction, instructions, dw, firstTwo[0], dw,
-            secondTwo[0], dw, sum1, "SUB", sum1Sat, 16L, "");
-        Helpers.signedSat(baseOffset, environment, instruction, instructions, dw, firstTwo[1], dw,
-            secondTwo[1], dw, sum2, "SUB", sum2Sat, 16L, "");
+        Helpers.signedSat(baseOffset + instructions.size(), environment, instruction, instructions,
+            dw, firstTwo[0], dw, secondTwo[0], dw, sum1, "SUB", sum1Sat, 16L, "");
+        Helpers.signedSat(baseOffset + instructions.size(), environment, instruction, instructions,
+            dw, firstTwo[1], dw, secondTwo[1], dw, sum2, "SUB", sum2Sat, 16L, "");
 
-        return new String[] {sum1Sat, sum2Sat};
+        return new String[] { sum1Sat, sum2Sat };
       }
     }.generate(environment, baseOffset, 16, sourceRegister1, sourceRegister2, targetRegister,
         instructions);

@@ -1,18 +1,17 @@
-/*
-Copyright 2011-2016 Google Inc. All Rights Reserved.
+// Copyright 2011-2016 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package com.google.security.zynamics.binnavi.API.disassembly;
 
 import java.util.ArrayList;
@@ -47,7 +46,7 @@ public final class OperandExpression implements ApiObject<INaviOperandTreeNode> 
   /**
    * Child nodes of the operand expression.
    */
-  private final List<OperandExpression> m_children = new ArrayList<OperandExpression>();
+  private final List<OperandExpression> m_children = new ArrayList<>();
 
   /**
    * Parent node of the operand expression.
@@ -57,7 +56,7 @@ public final class OperandExpression implements ApiObject<INaviOperandTreeNode> 
   /**
    * Outgoing references of the operand expression.
    */
-  private final List<Reference> m_references = new ArrayList<Reference>();
+  private final List<Reference> m_references = new ArrayList<>();
 
   /**
    * Keeps the API operand expression object synchronized with the internal operand expression
@@ -70,7 +69,7 @@ public final class OperandExpression implements ApiObject<INaviOperandTreeNode> 
    * Listeners that are notified about changes in the operand expression.
    */
   private final ListenerProvider<IOperandExpressionListener> m_listeners =
-      new ListenerProvider<IOperandExpressionListener>();
+      new ListenerProvider<>();
 
   // / @cond INTERNAL
   /**

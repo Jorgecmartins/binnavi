@@ -1,18 +1,17 @@
-/*
-Copyright 2011-2016 Google Inc. All Rights Reserved.
+// Copyright 2011-2016 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package com.google.security.zynamics.binnavi.API.disassembly;
 
 import java.awt.Color;
@@ -51,13 +50,13 @@ public final class CodeNode extends ViewNode {
   /**
    * Instructions of the code node.
    */
-  private final List<Instruction> m_instructions = new ArrayList<Instruction>();
+  private final List<Instruction> m_instructions = new ArrayList<>();
 
   /**
    * Listeners that are notified about changes in the code node.
    */
   private final ListenerProvider<ICodeNodeListener> m_listeners =
-      new ListenerProvider<ICodeNodeListener>();
+      new ListenerProvider<>();
 
   /**
    * Keeps the API code node synchronized with the internal code node.
@@ -68,7 +67,7 @@ public final class CodeNode extends ViewNode {
    * REIL translator used to translate the code node to REIL.
    */
   private final ReilTranslator<INaviInstruction> m_translator =
-      new ReilTranslator<INaviInstruction>();
+      new ReilTranslator<>();
 
   /**
    * REIL graph of the code node.
@@ -217,7 +216,7 @@ public final class CodeNode extends ViewNode {
       throws com.google.security.zynamics.binnavi.API.disassembly.CouldntSaveDataException,
       com.google.security.zynamics.binnavi.API.disassembly.CouldntLoadDataException {
 
-    List<IComment> currentComments = new ArrayList<IComment>();
+    List<IComment> currentComments = new ArrayList<>();
 
     try {
       currentComments = m_node.getComments().appendLocalCodeNodeComment(comment);

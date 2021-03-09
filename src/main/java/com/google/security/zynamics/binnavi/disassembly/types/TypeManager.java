@@ -1,18 +1,17 @@
-/*
-Copyright 2011-2016 Google Inc. All Rights Reserved.
+// Copyright 2011-2016 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package com.google.security.zynamics.binnavi.disassembly.types;
 
 import com.google.common.base.Optional;
@@ -67,9 +66,9 @@ public class TypeManager {
 
   private final TypesContainer typesContainer;
   private final ListenerProvider<TypeChangedListener> typeListeners =
-      new ListenerProvider<TypeChangedListener>();
+      new ListenerProvider<>();
   private final ListenerProvider<TypeSubstitutionChangedListener> substitutionListeners =
-      new ListenerProvider<TypeSubstitutionChangedListener>();
+      new ListenerProvider<>();
   private final TypeManagerBackend backend;
 
   /**
@@ -1180,13 +1179,13 @@ public class TypeManager {
   }
 
   private final class TypesContainer {
-    private final Set<BaseType> types = new LinkedHashSet<BaseType>();
-    private final Map<String, BaseType> typesByName = new HashMap<String, BaseType>();
-    private final Map<Integer, BaseType> typesById = new HashMap<Integer, BaseType>();
-    private final ArrayList<BaseType> stableTypeList = new ArrayList<BaseType>();
+    private final Set<BaseType> types = new LinkedHashSet<>();
+    private final Map<String, BaseType> typesByName = new HashMap<>();
+    private final Map<Integer, BaseType> typesById = new HashMap<>();
+    private final ArrayList<BaseType> stableTypeList = new ArrayList<>();
     private final HashMultimap<BaseType, TypeSubstitution> substitutionsByType =
         HashMultimap.create();
-    private final Map<Integer, TypeMember> memberById = new HashMap<Integer, TypeMember>();
+    private final Map<Integer, TypeMember> memberById = new HashMap<>();
     private final TypeDependenceGraph dependenceGraph;
 
     public TypesContainer(final List<RawBaseType> rawBaseTypes,

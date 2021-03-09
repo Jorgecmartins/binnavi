@@ -1,18 +1,17 @@
-/*
-Copyright 2011-2016 Google Inc. All Rights Reserved.
+// Copyright 2011-2016 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package com.google.security.zynamics.binnavi.yfileswrap.zygraph.Synchronizers;
 
 import com.google.common.base.Preconditions;
@@ -98,7 +97,7 @@ public final class CViewGraphSynchronizer {
    * Listeners that are notified about changes in the graph.
    */
   private final ListenerProvider<INaviGraphListener> m_listeners =
-      new ListenerProvider<INaviGraphListener>();
+      new ListenerProvider<>();
 
   /**
    * Synchronizes the visible edges with relevant edge visibility events.
@@ -126,7 +125,7 @@ public final class CViewGraphSynchronizer {
    * TODO: Remove listeners again if count drops to 0.
    */
   private final Map<INaviModule, Integer> m_cachedModuleListeners =
-      new HashMap<INaviModule, Integer>();
+      new HashMap<>();
 
   /**
    * Used to synchronize relevant changes in modules with graph nodes.
@@ -138,7 +137,7 @@ public final class CViewGraphSynchronizer {
    *
    * TODO: Remove listeners again if count drops to 0.
    */
-  private final Map<CTag, Integer> m_cachedTagListeners = new HashMap<CTag, Integer>();
+  private final Map<CTag, Integer> m_cachedTagListeners = new HashMap<>();
 
   /**
    * Synchronizes relevant changes in tags with the visible nodes.
@@ -148,7 +147,7 @@ public final class CViewGraphSynchronizer {
   /**
    * Keeps track of the currently selected nodes.
    */
-  private final Set<NaviNode> m_selectedNodes = new HashSet<NaviNode>();
+  private final Set<NaviNode> m_selectedNodes = new HashSet<>();
 
   /**
    * Creates a new object that synchronizes between a raw view and a visible graph.

@@ -1,9 +1,6 @@
 # BinNavi [![Build Status](https://api.travis-ci.org/google/binnavi.svg?branch=master)](https://travis-ci.org/google/binnavi)
 
-Copyright 2011-2016 Google Inc.
-
-Disclaimer: This is not an official Google product (experimental or otherwise),
-it is just code that happens to be owned by Google.
+Copyright 2011-2020 Google LLC
 
 ## Introduction
 
@@ -12,7 +9,10 @@ navigate, edit, and annotate control-flow-graphs of disassembled code, do the
 same for the callgraph of the executable, collect and combine execution traces,
 and generally keep track of analysis results among a group of analysts.
 
-## Complications from a third-party dependency
+**Note: The BinNavi project is no longer under active development.**
+
+
+## Commercial third-party dependency
 
 BinNavi uses a commercial third-party graph visualisation library (yFiles) for
 displaying and laying out graphs. This library is immensely powerful, and not
@@ -30,12 +30,12 @@ In order to achieve this, we did the following:
 project that directly depend on yFiles were split into subpackages called
 "yfileswrap":
 
-  * ``com.google.security.zynamics.binnavi``
-  * ``com.google.security.zynamics.binnavi.yfileswrap``
-  * ``com.google.security.zynamics.zylib``
-  * ``com.google.security.zynamics.zylib.yfileswrap``
-  * ``com.google.security.zynamics.reil``
-  * ``com.google.security.zynamics.reil.yfileswrap``
+*   `com.google.security.zynamics.binnavi`
+*   `com.google.security.zynamics.binnavi.yfileswrap`
+*   `com.google.security.zynamics.zylib`
+*   `com.google.security.zynamics.zylib.yfileswrap`
+*   `com.google.security.zynamics.reil`
+*   `com.google.security.zynamics.reil.yfileswrap`
 
 We are distributing a pre-built JAR file with all the code in the ``yfileswrap``
 subpackages - pre-linked and obfuscated against yFiles. If you wish to change
@@ -58,23 +58,29 @@ in respects the yFiles license.
 To rebuild the yFiles wrapper library, first copy `y.jar` and `ysvg.jar` to
 `third_party/java/yfiles`. Then rebuild with:
 
-    mvn dependency:copy-dependencies
-    ant build-yfiles-wrapper-jar
-    mvn install:install-file \
-        -Dfile=target/yfileswrap-obfuscated.jar \
-        -DgroupId=com.google.security.zynamics.binnavi \
-        -DartifactId=yfileswrap-obfuscated \
-        -Dversion=6.1 \
-        -Dpackaging=jar \
-        -DlocalRepositoryPath=lib
+```
+mvn dependency:copy-dependencies
+ant build-yfiles-wrapper-jar
+mvn install:install-file \
+    -Dfile=target/yfileswrap-obfuscated.jar \
+    -DgroupId=com.google.security.zynamics.binnavi \
+    -DartifactId=yfileswrap-obfuscated \
+    -Dversion=6.1 \
+    -Dpackaging=jar \
+    -DlocalRepositoryPath=lib
+```
 
 ## Building BinNavi from scratch
 
-BinNavi uses Maven for its dependency management, but not for the actual build
-yet. To build from scratch use these commands:
+BinNavi uses Maven for its dependency management, but not for the actual build.
+Java 11 is the minimum supported version.
 
-    mvn dependency:copy-dependencies
-    ant build-binnavi-fat-jar
+To build from scratch use these commands:
+
+```
+mvn dependency:copy-dependencies
+ant build-binnavi-fat-jar
+```
 
 ## Running BinNavi for the first time
 
@@ -82,7 +88,9 @@ Please be aware that BinNavi makes use of a central PostgreSQL database for
 storing disassemblies/comments/traces - so you need to have such an instance
 running somewhere accessible to you. You can launch BinNavi as follows:
 
-    java -jar target/binnavi-all.jar
+```
+java -jar target/binnavi-all.jar
+```
 
 ## Importing the project into Eclipse
 
@@ -119,29 +127,37 @@ in the near future.
 
 ## Building BinNavi with Gradle
 
-*Please note that at current the Maven build is the authorative build system for BinNavi. 
+*Please note that at current the Maven build is the authoritative build system for BinNavi. 
 Gradle is purely experimental and is likely to change.*
 
 You can build BinNavi with gradle by running the following:
 
-```
 On Linux / OS X:
-  $ ./gradlew clean jar 
+
+```
+$ ./gradlew clean jar 
+```
 
 On Windows:
-  ./gradlew.bat clean jar
+
+```
+/gradlew.bat clean jar
 ```
 
 This will produce the jar in the project route under `build/libs/`. 
 
 ### Loading the project into Eclipse with Gradle
 
-```
 On Linux / OS X:
-  $ ./gradlew eclipse 
+
+```
+$ ./gradlew eclipse 
+```
 
 On Windows:
-  ./gradlew.bat eclipse
+
+```
+./gradlew.bat eclipse
 ```
 
 As part of the project creation process it will download the dependencies. Once complete
@@ -159,12 +175,16 @@ You Eclipse workspace is now setup and complete for BinNavi.
 
 ### Loading the project into IntelliJ with Gradle
 
-```
 On Linux / OS X:
-  $ ./gradlew idea
+
+```
+$ ./gradlew idea
+```
 
 On Windows:
-  ./gradlew.bat idea
+
+```
+./gradlew.bat idea
 ```
 
 As part of the project creation process it will download the dependencies. Once complete

@@ -1,18 +1,17 @@
-/*
-Copyright 2011-2016 Google Inc. All Rights Reserved.
+// Copyright 2011-2016 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package com.google.security.zynamics.binnavi.Database.cache;
 
 import com.google.common.base.Function;
@@ -74,14 +73,14 @@ public class EdgeCache {
     }
   }
 
-  private static Map<SQLProvider, EdgeCache> caches = new HashMap<SQLProvider, EdgeCache>();
+  private static Map<SQLProvider, EdgeCache> caches = new HashMap<>();
 
   /**
    * The edges by id cache stores weak values of the actual edges to evict them from the cache when
    * no further references exist which reference them.
    * https://code.google.com/p/guava-libraries/wiki/CachesExplained
    */
-  Cache<Integer, INaviEdge> edgesByIdCache = CacheBuilder.newBuilder().weakValues().build();
+   Cache<Integer, INaviEdge> edgesByIdCache = CacheBuilder.newBuilder().weakValues().build();
 
   /**
    * The edge address to edge id cache is stores a list of the edge ids. This cache can in the
@@ -89,7 +88,7 @@ public class EdgeCache {
    * node ids. Therefore we are leaking memory here. An alternative approach here would be to do the
    * evictions manually.
    */
-  Cache<EdgeIdentifier, List<Integer>> edgeAddressToEdgeIdsCache =
+   Cache<EdgeIdentifier, List<Integer>> edgeAddressToEdgeIdsCache =
       CacheBuilder.newBuilder().build();
 
   private SQLProvider provider;

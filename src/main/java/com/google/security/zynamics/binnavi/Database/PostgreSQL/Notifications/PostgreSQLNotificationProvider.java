@@ -1,18 +1,17 @@
-/*
-Copyright 2011-2016 Google Inc. All Rights Reserved.
+// Copyright 2011-2016 Google LLC
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
 package com.google.security.zynamics.binnavi.Database.PostgreSQL.Notifications;
 
 import com.google.common.base.Preconditions;
@@ -62,7 +61,7 @@ public class PostgreSQLNotificationProvider {
   /**
    * The set of channels for which we want to receive notifications.
    */
-  private final Set<NotificationChannel> m_channels = new HashSet<NotificationChannel>();
+  private final Set<NotificationChannel> m_channels = new HashSet<>();
 
   /**
    * The scheduler used to periodically schedule the poll task for the database notifications.
@@ -89,13 +88,13 @@ public class PostgreSQLNotificationProvider {
    * Listeners that are notified about changes in the notification provider.
    */
   private final ListenerProvider<PostgreSQLNotificationListener> m_listeners =
-      new ListenerProvider<PostgreSQLNotificationListener>();
+      new ListenerProvider<>();
 
   /**
    * Keeps track of all notification providers. One for each database.
    */
   private static Map<SQLProvider, PostgreSQLNotificationProvider> m_notificationProviders =
-      new HashMap<SQLProvider, PostgreSQLNotificationProvider>();
+      new HashMap<>();
 
   /**
    * Connects this notification provider to a specific connection.
@@ -297,7 +296,7 @@ public class PostgreSQLNotificationProvider {
 
   private class CNotificationQueuePoller implements Runnable {
     private final Set<NotificationChannel> m_currentListenedChannels =
-        new HashSet<NotificationChannel>();
+        new HashSet<>();
 
     public CNotificationQueuePoller() {}
 
