@@ -160,6 +160,7 @@ public class TranslatorX64<InstructionType extends IInstruction> implements
       translators.put("movsd", new MovsdTranslator());
       translators.put("movsq", new MovsdTranslator());
       translators.put("movsx", new MovsxTranslator());
+      translators.put("movsxd", new MovsxdTranslator());
       translators.put("movzx", new MovzxTranslator());
       translators.put("mul", new MulTranslator());
       translators.put("or", new OrTranslator());
