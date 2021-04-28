@@ -17,6 +17,7 @@ package com.google.security.zynamics.binnavi.Gui.IdbSelection;
 import com.google.security.zynamics.binnavi.Gui.IdaSelectionDialog.CBinExportInstallationChecker;
 import com.google.security.zynamics.binnavi.Gui.IdaSelectionDialog.InstallationState;
 import com.google.security.zynamics.binnavi.Importers.CIdbFileFilter;
+import com.google.security.zynamics.binnavi.Importers.CElfFileFilter;
 import com.google.security.zynamics.binnavi.config.ConfigManager;
 import com.google.security.zynamics.zylib.gui.CDialogEscaper;
 import com.google.security.zynamics.zylib.gui.CMessageBox;
@@ -158,7 +159,7 @@ public final class CIdbSelectionDialog extends JDialog {
 
     final JPanel innerPanel = new JPanel(new BorderLayout());
 
-    m_threadsSlider = new JSlider(JSlider.HORIZONTAL, 1, 20, 3);
+    m_threadsSlider = new JSlider(JSlider.HORIZONTAL, 1, 20, 1);
     m_threadsSlider.setPaintLabels(true);
     m_threadsSlider.setPaintTicks(true);
     m_threadsSlider.setPaintTrack(true);
@@ -204,7 +205,8 @@ public final class CIdbSelectionDialog extends JDialog {
     };
 
     m_chooser.setControlButtonsAreShown(false);
-    m_chooser.setFileFilter(new CIdbFileFilter());
+    m_chooser.addChoosableFileFilter(new CIdbFileFilter());
+    m_chooser.setFileFilter(new CElfFileFilter());
     m_chooser.setMultiSelectionEnabled(true);
 
     if (!previousDirectories.isEmpty()) {

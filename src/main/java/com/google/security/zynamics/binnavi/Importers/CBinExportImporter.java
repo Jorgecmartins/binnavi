@@ -16,6 +16,7 @@ package com.google.security.zynamics.binnavi.Importers;
 
 import com.google.security.zynamics.binnavi.CUtilityFunctions;
 import com.google.security.zynamics.binnavi.Database.Interfaces.IDatabase;
+import com.google.security.zynamics.binnavi.Gui.StandardEditPanel.IFieldDescription;
 import com.google.security.zynamics.zylib.system.IdaException;
 import com.google.security.zynamics.zylib.system.IdaHelpers;
 import com.google.security.zynamics.zylib.system.SystemHelpers;
@@ -23,7 +24,9 @@ import com.google.security.zynamics.zylib.system.SystemHelpers;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.UnknownFormatConversionException;
@@ -169,11 +172,96 @@ public final class CBinExportImporter extends CBaseExporter {
   }
 
   /**
+   *
+   * format = 0 -> UNKNOWN.
+   * format = 1 -> ELF - 32 bit.
+   * format = 2 -> ELF - 64 bit.
+   * format = 3 -> IDA.
+  */
+  int getFileFormat(final String fileName) {
+
+	int format = 0;
+
+	try {
+		BufferedReader br = new BufferedReader(new FileReader(fileName));
+
+    byte[] magicNumber = new byte[4];
+
+		magicNumber[0] += (byte)br.read();
+		magicNumber[1] += (byte)br.read();
+		magicNumber[2] += (byte)br.read();
+		magicNumber[3] += (byte)br.read();
+
+		if (magicNumber[1] == (byte)'E' && magicNumber[2] == (byte)'L' && magicNumber[3] == (byte)'F') {
+			format = br.read();
+			// String log = "ELF" + " -> " + (format == 1 ? "32" : "64");
+			// System.out.println(log);
+		}
+    else if (magicNumber[0] == (byte)'I' && magicNumber[1] == (byte)'D' && magicNumber[2] == (byte)'A') {
+      format = 3;
+    }
+
+		br.close();
+
+	} catch (FileNotFoundException e) {
+		System.out.println(e);
+	} catch (IOException io) {
+		System.out.println(io);
+	}
+
+	return format;
+  }
+
+  Process createIDBFile(final String idaExe, String elfFile)
+  throws IdaException{
+
+    final ProcessBuilder processBuilder = new ProcessBuilder(
+      idaExe,
+      "-B",
+      elfFile);
+
+    // Now launch the exporter to export the IDB to the database
+    try {
+      Process processInfo = null;
+
+      processBuilder.redirectErrorStream(true);
+      processInfo = processBuilder.start();
+
+      // Java manages the streams internally - if they are full, the process blocks, i.e. IDA
+      // hangs, so we need to consume them.
+      final BufferedReader reader =
+          new BufferedReader(new InputStreamReader(processInfo.getInputStream()));
+      @SuppressWarnings("unused")
+      String line;
+      try {
+        while ((line = reader.readLine()) != null) {
+          System.out.println(line);
+        }
+      } catch (final IOException exception) {
+        reader.close();
+      }
+      reader.close();
+
+      return processInfo;
+    } catch (final Exception exception) {
+      try {
+        CUtilityFunctions.logException(exception);
+      } catch (final UnknownFormatConversionException e) {
+        // Some Windows error messages contain %1 characters.
+      }
+
+      throw new IdaException(
+          "E00210: Failed attempting to launch the importer with IDA: " + exception, exception);
+    }
+
+  }
+
+  /**
    * Imports an IDB File. Use this function if you want to import an IDB file without showing any
    * dialogs and if you want different exception types depending on what goes wrong while importing.
    *
    * @param idaDirectory Path to the IDA Pro installation directory
-   * @param idbFile Path to the IDB file to import.
+   * @param fileName Path to the IDB file to import.
    * @param database Import target.
    *
    * @throws ConfigFileException Thrown if the exporter configuration file could not be saved.
@@ -181,9 +269,50 @@ public final class CBinExportImporter extends CBaseExporter {
    * @throws ExporterException Thrown if the exporter failed for some reason.
    */
   @Override
-  protected void importModuleInternal(final String idbFile, final String idaDirectory,
-      final IDatabase database) throws ConfigFileException, IdaException, ExporterException {
-    CImporterManager.instance().startImporting(database, idbFile);
+  protected void importModuleInternal(final String fileName, final String idaDirectory,
+  final IDatabase database) throws ConfigFileException, IdaException, ExporterException {
+
+    String idaExe = idaDirectory + File.separatorChar;
+    String idbFile = new String();
+    int format = getFileFormat(fileName);
+
+    System.out.println("##################################################");
+
+    if (format == 0){
+      //NOT A VALID FILE FORMAT
+      System.out.println("[ERROR] - THIS FILE IS NOT SUPPORTED '" + fileName + "' skipping");
+      return;
+    }
+    else if (format == 1 || format == 2) {
+      // it is an ELF
+      idaExe += (format == 1) ? IdaHelpers.IDA32_EXECUTABLE : IdaHelpers.IDA64_EXECUTABLE;
+      idbFile = fileName + (format == 1 ? ".idb" : ".i64");
+
+    System.out.println("Exporting '" + idbFile + "' to database");
+    int createIDBFileExitCode = 0;
+    do {
+      final Process processInfo = createIDBFile(idaExe, fileName);
+
+      try {
+        createIDBFileExitCode = processInfo.waitFor();
+        System.out.println("Create IDB file exit code:" + createIDBFileExitCode);
+        handleExitCode(createIDBFileExitCode);
+      } catch (final InterruptedException e) {
+        CUtilityFunctions.logException(e);
+        Thread.currentThread().interrupt();
+      }
+    } while ((createIDBFileExitCode & 0xFE) == 0xFE);
+  }
+
+  else {
+    //IDA file
+    idbFile = fileName;
+    idaExe += (idbFile.endsWith("idb") ? IdaHelpers.IDA32_EXECUTABLE : IdaHelpers.IDA64_EXECUTABLE);
+    System.out.println("Exporting '" + idbFile + "' to database");
+  }
+
+
+	CImporterManager.instance().startImporting(database, idbFile);
 
     try {
       int exitCode = 0;
@@ -194,8 +323,8 @@ public final class CBinExportImporter extends CBaseExporter {
         final String password = database.getConfiguration().getPassword();
         final String name = database.getConfiguration().getName();
 
-        final Process processInfo = createIdaProcess(idaDirectory + File.separatorChar
-            + (idbFile.endsWith("idb") ? IdaHelpers.IDA32_EXECUTABLE : IdaHelpers.IDA64_EXECUTABLE),
+        final Process processInfo = createIdaProcess(
+			      idaExe,
             idbFile,
             host,
             port,
@@ -205,7 +334,7 @@ public final class CBinExportImporter extends CBaseExporter {
 
         try {
           exitCode = processInfo.waitFor();
-	  System.out.println("Exit code of ida:" + exitCode);
+	        System.out.println("Export IDB file exit code:" + exitCode);
           handleExitCode(exitCode);
         } catch (final InterruptedException e) {
           CUtilityFunctions.logException(e);
